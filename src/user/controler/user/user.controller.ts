@@ -13,13 +13,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
+import { TaskDataDto } from 'src/user/Dtos/CreateTask.dto';
 import { CreateUserDto } from 'src/user/Dtos/CreateUser.dto';
 import { User } from 'src/user/Schemas/user.schema';
+import { TaskService } from 'src/user/service/task/task.service';
 import { UserService } from 'src/user/service/user/user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+    constructor(
+        private readonly userService: UserService, 
+        private readonly taskService: TaskService
+      ) {}
+
+  
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
@@ -104,6 +111,21 @@ export class UserController {
       );
     }
   }
+
+
+  @Post('createTask')
+  async createTask(@Query('userId') userId:string,@Body() taskData:TaskDataDto){
+       try {
+            return await this.taskService.createTask(userId,taskData);
+          } catch (error) {
+            throw new HttpException(
+              { message: 'Failed to create task', error: error.message },
+              HttpStatus.BAD_REQUEST,
+            );
+          }
+  }
+
+  
   
 
 }
