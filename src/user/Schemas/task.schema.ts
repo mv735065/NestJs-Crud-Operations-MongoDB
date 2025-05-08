@@ -10,7 +10,7 @@ export class Task{
   name:string;
 
   @Prop()
-  description:string;
+  description?:string;
 
   @Prop({default:false})
   completed:boolean

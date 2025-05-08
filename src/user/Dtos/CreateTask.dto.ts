@@ -10,11 +10,11 @@ export class TaskDataDto{
 
     @Optional()
     @IsString()
-    description:string;
+    description?:string;
 
     @Optional()
     @IsBoolean()
-    completed:boolean;
+    completed?:boolean;
 
     
 }

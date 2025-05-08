@@ -14,7 +14,7 @@ import { UserService } from './user/service/user/user.service';
      TaskModule,
      UserModule
      ],
-  controllers: [TaskController,UserController],
-  providers: [TaskService,UserService],
+  // controllers: [TaskController,UserController],
+  // providers: [UserService],
 })
 export class AppModule {}

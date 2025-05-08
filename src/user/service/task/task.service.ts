@@ -8,8 +8,5 @@ import { Task, TaskDocument } from 'src/user/Schemas/task.schema';
 export class TaskService {
     constructor(@InjectModel(Task.name) private taskModel:Model<TaskDocument> ){}
 
-    async createTask(id:string,taskData:TaskDataDto){
-       const task=new this.taskModel(taskData)
-       return task;
-    }
+    
 }

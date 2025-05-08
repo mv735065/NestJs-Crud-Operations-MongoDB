@@ -23,7 +23,6 @@ import { UserService } from 'src/user/service/user/user.service';
 export class UserController {
     constructor(
         private readonly userService: UserService, 
-        private readonly taskService: TaskService
       ) {}
 
   
@@ -116,8 +115,11 @@ export class UserController {
   @Post('createTask')
   async createTask(@Query('userId') userId:string,@Body() taskData:TaskDataDto){
        try {
-            return await this.taskService.createTask(userId,taskData);
+            return await this.userService.createTask(userId,taskData);
           } catch (error) {
+            if (error instanceof NotFoundException) {
+              throw error;
+            }
             throw new HttpException(
               { message: 'Failed to create task', error: error.message },
               HttpStatus.BAD_REQUEST,
