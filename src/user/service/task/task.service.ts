@@ -6,7 +6,9 @@ import { Task, TaskDocument } from 'src/user/Schemas/task.schema';
 
 @Injectable()
 export class TaskService {
-    constructor(@InjectModel(Task.name) private taskModel:Model<TaskDocument> ){}
+  constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
-    
+  async getAllTasks(): Promise<Task[]> {
+    return this.taskModel.find()
+  }
 }
