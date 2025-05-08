@@ -11,6 +11,7 @@ import {
   Query,
   Delete,
   NotFoundException,
+  Param,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { TaskDataDto } from 'src/user/Dtos/CreateTask.dto';
@@ -40,8 +41,24 @@ export class UserController {
     }
   }
 
-  @Get()
-  async findUser(@Query('id') id: string) {
+  @Get('all')
+  async getAllUsers() {
+    try {
+      const users = await this.userService.getAllUsers();
+      return users;
+    } catch (error) {
+        if (error instanceof NotFoundException) {
+            throw error;
+          }
+      throw new HttpException(
+        { message: 'Failed to retrieve users', error: error.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Get(':id')
+  async findUser(@Param('id') id: string) {
     try {
       const user = await this.userService.findUser(id);
       if (!user) {
@@ -59,8 +76,8 @@ export class UserController {
     }
   }
 
-  @Put()
-  async updateUser(@Query('id') id: string, @Body() updateData: Partial<User>) {
+  @Put(':id')
+  async updateUser(@Param('id') id: string, @Body() updateData: Partial<User>) {
     try {
       const updatedUser = await this.userService.updateUser(id, updateData);
       return updatedUser;
@@ -75,21 +92,7 @@ export class UserController {
     }
   }
 
-  @Get('all')
-  async getAllUsers() {
-    try {
-      const users = await this.userService.getAllUsers();
-      return users;
-    } catch (error) {
-        if (error instanceof NotFoundException) {
-            throw error;
-          }
-      throw new HttpException(
-        { message: 'Failed to retrieve users', error: error.message },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
+
 
   @Delete()
   async deleteUser(@Query('id') id: string) {
