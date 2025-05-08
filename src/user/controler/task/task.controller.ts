@@ -19,4 +19,4 @@ export class TaskController {
   async getAllTasks() {
     return await this.taskService.getAllTasks();
   }
-}
+} 
